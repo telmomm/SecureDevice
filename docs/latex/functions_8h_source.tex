@@ -1,0 +1,247 @@
+\doxysection{functions.\+h}
+\hypertarget{functions_8h_source}{}\label{functions_8h_source}\index{src/functions.h@{src/functions.h}}
+\mbox{\hyperlink{functions_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#include\ <Arduino.h>}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ DISPLAY}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <U8g2lib.h>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <Wire.h>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ GPS}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <TinyGPSPlus.h>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <SoftwareSerial.h>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ MPU6050}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}I2Cdev.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}MPU6050.h"{}}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00019\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{functions_8h_aeaffd363e295bd3d4bd5d7299e2fcd99}{wirelessTracker1Setup}}()\{}
+\DoxyCodeLine{00020\ \ \ pinMode(VEXT,\ OUTPUT);}
+\DoxyCodeLine{00021\ \ \ pinMode(BOOT\_MODE,OUTPUT);}
+\DoxyCodeLine{00022\ \ \ \ \ }
+\DoxyCodeLine{00023\ \ \ digitalWrite(VEXT,\ HIGH);}
+\DoxyCodeLine{00024\ \ \ digitalWrite(BOOT\_MODE,\ LOW);}
+\DoxyCodeLine{00025\ \}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{functions_8h_a8bd43df7bc356312142e1723306fb9ab}{showVersions}}()\{}
+\DoxyCodeLine{00028\ \ \ DEBUG\_PRINTLN(\textcolor{stringliteral}{"{}[LIBRARY\ VERSIONS]"{}});}
+\DoxyCodeLine{00029\ \ \ DEBUG\_PRINTLN(\textcolor{stringliteral}{"{}\ \ \ ARDUINO\ "{}}\ +\ String(ARDUINO));}
+\DoxyCodeLine{00030\ \ \ DEBUG\_PRINTLN(\textcolor{stringliteral}{"{}\ \ \ TINY\ GPS\ "{}}\ +\ String(TinyGPSPlus::libraryVersion()));}
+\DoxyCodeLine{00031\ \}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{functions_8h_a39dd857d437411bf1e3b4509efe844de}{readBatteryLevel}}(\textcolor{keywordtype}{int}\ VBATPIN)\{}
+\DoxyCodeLine{00035\ \ \ uint32\_t\ raw\ =\ analogRead(VBATPIN);}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{float}\ voltage\ =\ raw\ *\ 3.3\ /\ 4095.0;}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordtype}{float}\ maxVoltage\ =\ 3.6;}
+\DoxyCodeLine{00038\ \ \ \textcolor{keywordtype}{float}\ minVoltage\ =\ 2.55;}
+\DoxyCodeLine{00039\ \ \ \textcolor{keywordtype}{float}\ percentage\ =\ (voltage\ -\/\ minVoltage)\ /\ (maxVoltage\ -\/\ minVoltage)\ *\ 100;}
+\DoxyCodeLine{00040\ \ \ \textcolor{keywordflow}{return}\ percentage;}
+\DoxyCodeLine{00041\ \}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00051\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{functions_8h_aeb233c6e457322f97c005b1c29530baa}{initDisplay}}(U8G2\ \&u8g2)\{}
+\DoxyCodeLine{00052\ \ \ }
+\DoxyCodeLine{00053\ \ \ DEBUG\_PRINT(\textcolor{stringliteral}{"{}[DISPLAY]\ Initializing\ ...\ "{}});}
+\DoxyCodeLine{00054\ \ \ \textcolor{keywordflow}{if}(u8g2.begin())\{}
+\DoxyCodeLine{00055\ \ \ \ \ DEBUG\_PRINTLN(\textcolor{stringliteral}{"{}success!"{}});}
+\DoxyCodeLine{00056\ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ DEBUG\_PRINTLN(\textcolor{stringliteral}{"{}failed!"{}});\ }
+\DoxyCodeLine{00058\ \ \ \}}
+\DoxyCodeLine{00059\ \}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00065\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{functions_8h_a2db20e6cabff2cd55904a0763889d19c}{displayMessage}}(U8G2\ \&u8g2,\ String\ message)\{}
+\DoxyCodeLine{00066\ \ \ u8g2.clearBuffer();}
+\DoxyCodeLine{00067\ \ \ u8g2.setFont(u8g2\_font\_10x20\_tf);}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordtype}{int}\ screenHeight\ =\ u8g2.getDisplayHeight();}
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordtype}{int}\ textHeight\ =\ u8g2.getFontAscent()\ -\/\ u8g2.getFontDescent();}
+\DoxyCodeLine{00071\ \ \ \textcolor{keywordtype}{int}\ yPos\ =\ (screenHeight\ -\/\ textHeight)\ /\ 2;}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordtype}{int}\ screenWidth\ =\ u8g2.getDisplayWidth();}
+\DoxyCodeLine{00074\ \ \ \textcolor{keywordtype}{int}\ textWidth\ =\ u8g2.getStrWidth(message.c\_str());}
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordtype}{int}\ xPos\ =\ (screenWidth\ -\/\ textWidth)\ /\ 2;}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ u8g2.drawStr(xPos,\ yPos,\ message.c\_str());}
+\DoxyCodeLine{00078\ \ \ u8g2.sendBuffer();}
+\DoxyCodeLine{00079\ \}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00084\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00085\ \ \ uint32\_t\ \mbox{\hyperlink{struct_t_t_n_vars_a938cc80b15d4e657623cb48f5faf4ff2}{devAddr}};}
+\DoxyCodeLine{00086\ \ \ uint8\_t\ nwkSKey[16];}
+\DoxyCodeLine{00087\ \ \ uint8\_t\ appSKey[16];}
+\DoxyCodeLine{00088\ \}\ \mbox{\hyperlink{struct_t_t_n_vars}{TTNVars}};}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \mbox{\hyperlink{struct_t_t_n_vars}{TTNVars}}\ \mbox{\hyperlink{functions_8h_af39bb8d1d05e063f6aa34c13541be1d1}{TTNVariableConversion}}(\textcolor{keywordtype}{char}*\ devAddrStr,\ \textcolor{keywordtype}{char}*\ nwkSKeyStr,\ \textcolor{keywordtype}{char}*\ appSKeyStr)\{}
+\DoxyCodeLine{00091\ \ \ printf(\textcolor{stringliteral}{"{}[TTNVariableConversion]\ initializing\ ...\ "{}});}
+\DoxyCodeLine{00092\ \ \ \mbox{\hyperlink{struct_t_t_n_vars}{TTNVars}}\ vars;}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ \textcolor{comment}{//devAddr\ variable\ conversion}}
+\DoxyCodeLine{00095\ \ \ sscanf(devAddrStr,\ \textcolor{stringliteral}{"{}\%x"{}},\ \&vars.\mbox{\hyperlink{struct_t_t_n_vars_a938cc80b15d4e657623cb48f5faf4ff2}{devAddr}});}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \textcolor{comment}{//nwkSKey\ variable\ conversion}}
+\DoxyCodeLine{00098\ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 16;\ i++)\ \{}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ value;}
+\DoxyCodeLine{00100\ \ \ \ \ sscanf(nwkSKeyStr\ +\ 3*i,\ \textcolor{stringliteral}{"{}\%2x"{}},\ \&value);}
+\DoxyCodeLine{00101\ \ \ \ \ vars.\mbox{\hyperlink{struct_t_t_n_vars_a4db86e14dae189ceb8061bb6ca733910}{nwkSKey}}[i]\ =\ value;}
+\DoxyCodeLine{00102\ \ \ \}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \textcolor{comment}{//appSKey\ variable\ conversion}}
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 16;\ i++)\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ value;}
+\DoxyCodeLine{00107\ \ \ \ \ sscanf(appSKeyStr\ +\ 3*i,\ \textcolor{stringliteral}{"{}\%2x"{}},\ \&value);}
+\DoxyCodeLine{00108\ \ \ \ \ vars.\mbox{\hyperlink{struct_t_t_n_vars_a929c02fccfd6badaca42a2faf3ce6765}{appSKey}}[i]\ =\ value;}
+\DoxyCodeLine{00109\ \ \ \}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \textcolor{keywordflow}{return}\ vars;}
+\DoxyCodeLine{00112\ \}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00125\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{functions_8h_a401290cdbb72c9a0f6b801217d9a5d38}{initRadio}}(SX1262\ \&radio,\ LoRaWANNode\ \&node,\ \mbox{\hyperlink{struct_t_t_n_vars}{TTNVars}}\ \mbox{\hyperlink{struct_t_t_n_vars}{TTNVars}},\ \textcolor{keywordtype}{int}\ retryCount)\{}
+\DoxyCodeLine{00126\ \ \ \textcolor{comment}{//\ initialize\ SX1262\ with\ default\ settings}}
+\DoxyCodeLine{00127\ \ \ DEBUG\_PRINT(F(\textcolor{stringliteral}{"{}[SX1262]\ Initializing\ ...\ "{}}));}
+\DoxyCodeLine{00128\ \ \ \textcolor{keywordtype}{int}\ state;}
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ retryCount;\ i++)\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ state\ =\ radio.begin();}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordflow}{if}(state\ ==\ RADIOLIB\_ERR\_NONE)\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ DEBUG\_PRINTLN(F(\textcolor{stringliteral}{"{}success!"{}}));}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00134\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ DEBUG\_PRINT(F(\textcolor{stringliteral}{"{}failed,\ code\ "{}}));}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ DEBUG\_PRINTLN(state);}
+\DoxyCodeLine{00137\ \ \ \ \ \}}
+\DoxyCodeLine{00138\ \ \ \}}
+\DoxyCodeLine{00139\ \ \ \textcolor{comment}{//\ If\ we\ reach\ this\ point,\ all\ retries\ have\ failed}}
+\DoxyCodeLine{00140\ \ \ \textcolor{keywordflow}{while}(\textcolor{keyword}{true});}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \ \ DEBUG\_PRINT(F(\textcolor{stringliteral}{"{}[SX1262]\ Sleeping\ module\ ...\ "{}}));}
+\DoxyCodeLine{00143\ \ \ \textcolor{comment}{//state\ =\ radio.sleep();}}
+\DoxyCodeLine{00144\ \ \ \textcolor{keywordflow}{if}(state\ ==\ RADIOLIB\_ERR\_NONE)\ \{}
+\DoxyCodeLine{00145\ \ \ \ \ DEBUG\_PRINTLN(F(\textcolor{stringliteral}{"{}success!"{}}));}
+\DoxyCodeLine{00146\ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00147\ \ \ \ \ DEBUG\_PRINT(F(\textcolor{stringliteral}{"{}failed,\ code\ "{}}));}
+\DoxyCodeLine{00148\ \ \ \ \ DEBUG\_PRINTLN(state);}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordflow}{while}(\textcolor{keyword}{true});}
+\DoxyCodeLine{00150\ \ \ \}}
+\DoxyCodeLine{00151\ ;\}}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{functions_8h_a5e57430283061f0a4e539279c6d57b69}{initLora}}(LoRaWANNode\ \&node)\{}
+\DoxyCodeLine{00154\ \ \ \textcolor{keywordtype}{int}\ state;}
+\DoxyCodeLine{00155\ \textcolor{comment}{//\ if\ using\ EU868\ on\ ABP\ in\ TTN,\ you\ need\ to\ set\ the\ SF\ for\ RX2\ window\ manually}}
+\DoxyCodeLine{00156\ \ \ \textcolor{comment}{//node.rx2.drMax\ =\ 3;}}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00158\ \ \ \textcolor{comment}{//\ start\ the\ device\ by\ directly\ providing\ the\ encryption\ keys\ and\ device\ address}}
+\DoxyCodeLine{00159\ \ \ uint32\_t\ devAddr\ =\ 0x260B34C5;}
+\DoxyCodeLine{00160\ \ \ uint8\_t\ nwkSKey[]\ =\ \{\ 0xF4,\ 0x73,\ 0x50,\ 0xCC,\ 0xF4,\ 0x94,\ 0xE3,\ 0x03,\ 0xA5,\ 0xC9,\ 0x6F,\ 0xD5,\ 0x06,\ 0x4A,\ 0x3F,\ 0x10\ \};}
+\DoxyCodeLine{00161\ \ \ uint8\_t\ appSKey[]\ =\ \{\ 0xA2,\ 0xE2,\ 0x00,\ 0xFE,\ 0x54,\ 0x08,\ 0x95,\ 0xE6,\ 0x14,\ 0x60,\ 0x8E,\ 0x7A,\ 0xE0,\ 0x06,\ 0xD3,\ 0x23\ \};}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \ \ DEBUG\_PRINT(F(\textcolor{stringliteral}{"{}[LoRaWAN]\ Initializing\ ...\ "{}}));}
+\DoxyCodeLine{00164\ \ \ state\ =\ node.beginAPB(devAddr,\ nwkSKey,\ appSKey);}
+\DoxyCodeLine{00165\ \ \ \textcolor{keywordflow}{if}(state\ ==\ RADIOLIB\_ERR\_NONE)\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ DEBUG\_PRINTLN(F(\textcolor{stringliteral}{"{}success!"{}}));}
+\DoxyCodeLine{00167\ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00168\ \ \ \ \ DEBUG\_PRINT(F(\textcolor{stringliteral}{"{}failed,\ code\ "{}}));}
+\DoxyCodeLine{00169\ \ \ \ \ DEBUG\_PRINTLN(state);}
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{comment}{//while(true);}}
+\DoxyCodeLine{00171\ \ \ \}}
+\DoxyCodeLine{00172\ \ \ \textcolor{comment}{//Status\ Codes:\ https://jgromes.github.io/RadioLib/group\_\_status\_\_codes.html}}
+\DoxyCodeLine{00173\ \}}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00180\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{functions_8h_a328fec05af67068054d988e698cf4daa}{sendMessage}}(String\ message,\ SX1262\ \&radio,\ LoRaWANNode\ \&node)\{}
+\DoxyCodeLine{00181\ \ \ DEBUG\_PRINT(F(\textcolor{stringliteral}{"{}[LoRaWAN]\ Sending\ uplink\ packet\ ...\ "{}}));}
+\DoxyCodeLine{00182\ \ \ String\ strDown;}
+\DoxyCodeLine{00183\ \ \ \textcolor{comment}{//int\ state\ =\ node.sendReceive(strUp,\ 10,\ strDown);}}
+\DoxyCodeLine{00184\ \ \ \textcolor{keywordtype}{int}\ state\ =\ node.uplink(message,\ 10);}
+\DoxyCodeLine{00185\ \ \ \textcolor{keywordflow}{if}(state\ ==\ RADIOLIB\_ERR\_NONE)\ \{}
+\DoxyCodeLine{00186\ \ \ \ \ DEBUG\_PRINTLN(F(\textcolor{stringliteral}{"{}received\ a\ downlink!"{}}));}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{comment}{//\ print\ data\ of\ the\ packet\ (if\ there\ are\ any)}}
+\DoxyCodeLine{00189\ \ \ \ \ DEBUG\_PRINT(F(\textcolor{stringliteral}{"{}[LoRaWAN]\ Data:\(\backslash\)t\(\backslash\)t"{}}));}
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{keywordflow}{if}(strDown.length()\ >\ 0)\ \{}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ DEBUG\_PRINTLN(strDown);}
+\DoxyCodeLine{00192\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ DEBUG\_PRINTLN(F(\textcolor{stringliteral}{"{}<MAC\ commands\ only>"{}}));}
+\DoxyCodeLine{00194\ \ \ \ \ \}}
+\DoxyCodeLine{00195\ }
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{comment}{//\ print\ RSSI\ (Received\ Signal\ Strength\ Indicator)}}
+\DoxyCodeLine{00197\ \ \ \ \ DEBUG\_PRINT(F(\textcolor{stringliteral}{"{}[LoRaWAN]\ RSSI:\(\backslash\)t\(\backslash\)t"{}}));}
+\DoxyCodeLine{00198\ \ \ \ \ DEBUG\_PRINT(radio.getRSSI());}
+\DoxyCodeLine{00199\ \ \ \ \ DEBUG\_PRINTLN(F(\textcolor{stringliteral}{"{}\ dBm"{}}));}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{comment}{//\ print\ SNR\ (Signal-\/to-\/Noise\ Ratio)}}
+\DoxyCodeLine{00202\ \ \ \ \ DEBUG\_PRINT(F(\textcolor{stringliteral}{"{}[LoRaWAN]\ SNR:\(\backslash\)t\(\backslash\)t"{}}));}
+\DoxyCodeLine{00203\ \ \ \ \ DEBUG\_PRINT(radio.getSNR());}
+\DoxyCodeLine{00204\ \ \ \ \ DEBUG\_PRINTLN(F(\textcolor{stringliteral}{"{}\ dB"{}}));}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{comment}{//\ print\ frequency\ error}}
+\DoxyCodeLine{00207\ \ \ \ \ DEBUG\_PRINT(F(\textcolor{stringliteral}{"{}[LoRaWAN]\ Frequency\ error:\(\backslash\)t"{}}));}
+\DoxyCodeLine{00208\ \ \ \ \ DEBUG\_PRINT(radio.getFrequencyError());}
+\DoxyCodeLine{00209\ \ \ \ \ DEBUG\_PRINTLN(F(\textcolor{stringliteral}{"{}\ Hz"{}}));}
+\DoxyCodeLine{00210\ \ \ }
+\DoxyCodeLine{00211\ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(state\ ==\ RADIOLIB\_ERR\_RX\_TIMEOUT)\ \{}
+\DoxyCodeLine{00212\ \ \ \ \ DEBUG\_PRINTLN(F(\textcolor{stringliteral}{"{}no\ downlink!"{}}));}
+\DoxyCodeLine{00213\ \ \ }
+\DoxyCodeLine{00214\ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00215\ \ \ \ \ DEBUG\_PRINT(F(\textcolor{stringliteral}{"{}failed,\ code\ "{}}));}
+\DoxyCodeLine{00216\ \ \ \ \ DEBUG\_PRINTLN(state);}
+\DoxyCodeLine{00217\ \ \ \}}
+\DoxyCodeLine{00218\ \}}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00223\ }
+\DoxyCodeLine{00224\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{functions_8h_a3b62d03b1d6cf6758c19897337498587}{initMPU6050}}(MPU6050\ \&accelgyro)\{}
+\DoxyCodeLine{00225\ \ \ DEBUG\_PRINT(\textcolor{stringliteral}{"{}[Wire]\ Initializing\ ...\ "{}});}
+\DoxyCodeLine{00226\ \ \ \textcolor{keywordflow}{if}(Wire.begin())\{}
+\DoxyCodeLine{00227\ \ \ \ \ DEBUG\_PRINTLN(\textcolor{stringliteral}{"{}success!"{}});}
+\DoxyCodeLine{00228\ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00229\ \ \ \ \ DEBUG\_PRINTLN(\textcolor{stringliteral}{"{}failed!"{}});}
+\DoxyCodeLine{00230\ \ \ \};}
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00232\ \ \ DEBUG\_PRINT(\textcolor{stringliteral}{"{}[MPU6050]\ Initializing\ ...\ "{}});}
+\DoxyCodeLine{00233\ \ \ accelgyro.initialize();}
+\DoxyCodeLine{00234\ \ \ DEBUG\_PRINTLN(accelgyro.testConnection()\ ?\ \textcolor{stringliteral}{"{}success"{}}\ :\ \textcolor{stringliteral}{"{}failed"{}});}
+\DoxyCodeLine{00235\ \ \ \textcolor{comment}{//Configure\ MPU\ in\ sleep\ mode}}
+\DoxyCodeLine{00236\ \ \ accelgyro.setSleepEnabled(\textcolor{keyword}{true});}
+\DoxyCodeLine{00237\ \ \ \textcolor{comment}{//\ Configura\ el\ MPU6050\ para\ que\ genere\ una\ interrupción\ cuando\ detecte\ movimiento}}
+\DoxyCodeLine{00238\ \ \ \ \ accelgyro.setMotionDetectionThreshold(2);\ \textcolor{comment}{//\ Configura\ el\ umbral\ de\ detección\ de\ movimiento}}
+\DoxyCodeLine{00239\ \ \ \ \ accelgyro.setZeroMotionDetectionDuration(2);\ \textcolor{comment}{//\ Configura\ la\ duración\ de\ la\ detección\ de\ movimiento}}
+\DoxyCodeLine{00240\ \ \ \ \ accelgyro.setInterruptMode(\textcolor{keyword}{true});\ \textcolor{comment}{//\ Habilita\ la\ interrupción\ de\ detección\ de\ movimiento}}
+\DoxyCodeLine{00241\ \}}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00246\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_coordinates}{Coordinates}}\ \{}
+\DoxyCodeLine{00247\ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{struct_coordinates_a20ea6542be083155699517939b03f259}{latitude}};}
+\DoxyCodeLine{00248\ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{struct_coordinates_a474951b7ec4e5f12e788abbf852cd88b}{longitude}};}
+\DoxyCodeLine{00249\ \};}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00251\ }
+\DoxyCodeLine{00256\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{functions_8h_a889ca4b369dd61e40cb2e33d8506fcc7}{initGPS}}(SoftwareSerial\ \&ss,\ \textcolor{keywordtype}{int}\ GPSBaud)\{}
+\DoxyCodeLine{00257\ \ \ }
+\DoxyCodeLine{00258\ \ \ ss.begin(GPSBaud);}
+\DoxyCodeLine{00259\ \ \ DEBUG\_PRINT(\textcolor{stringliteral}{"{}[GPS]\ Initializing\ ...\ "{}});}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00261\ \ \ \textcolor{comment}{//\ Espera\ un\ poco\ para\ que\ el\ GPS\ comience\ a\ enviar\ datos}}
+\DoxyCodeLine{00262\ \ \ delay(2000);}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \ \ \textcolor{keywordflow}{if}(ss.available())\{}
+\DoxyCodeLine{00265\ \ \ \ \ DEBUG\_PRINTLN(\textcolor{stringliteral}{"{}success!"{}});}
+\DoxyCodeLine{00266\ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00267\ \ \ \ \ DEBUG\_PRINTLN(\textcolor{stringliteral}{"{}failed,\ GPS\ not\ detected"{}});}
+\DoxyCodeLine{00268\ \ \ \}}
+\DoxyCodeLine{00269\ \}}
+\DoxyCodeLine{00270\ }
+\DoxyCodeLine{00275\ \mbox{\hyperlink{struct_coordinates}{Coordinates}}\ \mbox{\hyperlink{functions_8h_adade3d1ad90c4b8da5c4269beffe5e13}{readGPS}}(SoftwareSerial\ \&ss,\ TinyGPSPlus\ \&gps)\ \{}
+\DoxyCodeLine{00276\ \ \ \textcolor{keywordflow}{while}\ (ss.available()\ >\ 0)\ \{}
+\DoxyCodeLine{00277\ \ \ \ \ \textcolor{keywordflow}{if}\ (gps.encode(ss.read()))\ \{}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (gps.location.isUpdated())\ \{}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_coordinates}{Coordinates}}\ coordinates\ =\ \{gps.location.lat(),\ gps.location.lng()\};}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ DEBUG\_PRINTLN(\textcolor{stringliteral}{"{}Latitude:\ "{}}\ +\ String(coordinates.\mbox{\hyperlink{struct_coordinates_a20ea6542be083155699517939b03f259}{latitude}})\ +\ \textcolor{stringliteral}{"{}\ Longitude:\ "{}}\ +\ String(coordinates.\mbox{\hyperlink{struct_coordinates_a474951b7ec4e5f12e788abbf852cd88b}{longitude}}));}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ coordinates;}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00283\ \ \ \ \ \}}
+\DoxyCodeLine{00284\ \ \ \}}
+\DoxyCodeLine{00285\ \ \ \textcolor{keywordflow}{return}\ \{0,\ 0\};}
+\DoxyCodeLine{00286\ \}}
+
+\end{DoxyCode}

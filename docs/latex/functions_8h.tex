@@ -1,0 +1,215 @@
+\doxysection{src/functions.h File Reference}
+\hypertarget{functions_8h}{}\label{functions_8h}\index{src/functions.h@{src/functions.h}}
+{\ttfamily \#include $<$Arduino.\+h$>$}\newline
+{\ttfamily \#include $<$U8g2lib.\+h$>$}\newline
+{\ttfamily \#include $<$Wire.\+h$>$}\newline
+{\ttfamily \#include $<$Tiny\+GPSPlus.\+h$>$}\newline
+{\ttfamily \#include $<$Software\+Serial.\+h$>$}\newline
+{\ttfamily \#include "{}I2\+Cdev.\+h"{}}\newline
+{\ttfamily \#include "{}MPU6050.\+h"{}}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_t_t_n_vars}{TTNVars}}
+\item 
+struct \mbox{\hyperlink{struct_coordinates}{Coordinates}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{functions_8h_aeaffd363e295bd3d4bd5d7299e2fcd99}{wireless\+Tracker1\+Setup}} ()
+\item 
+void \mbox{\hyperlink{functions_8h_a8bd43df7bc356312142e1723306fb9ab}{show\+Versions}} ()
+\item 
+float \mbox{\hyperlink{functions_8h_a39dd857d437411bf1e3b4509efe844de}{read\+Battery\+Level}} (int VBATPIN)
+\item 
+void \mbox{\hyperlink{functions_8h_aeb233c6e457322f97c005b1c29530baa}{init\+Display}} (U8\+G2 \&u8g2)
+\begin{DoxyCompactList}\small\item\em \+: Initialize the display \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{functions_8h_a2db20e6cabff2cd55904a0763889d19c}{display\+Message}} (U8\+G2 \&u8g2, String message)
+\begin{DoxyCompactList}\small\item\em Display a message on the screen. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_t_t_n_vars}{TTNVars}} \mbox{\hyperlink{functions_8h_af39bb8d1d05e063f6aa34c13541be1d1}{TTNVariable\+Conversion}} (char \texorpdfstring{$\ast$}{*}dev\+Addr\+Str, char \texorpdfstring{$\ast$}{*}nwk\+SKey\+Str, char \texorpdfstring{$\ast$}{*}app\+SKey\+Str)
+\item 
+void \mbox{\hyperlink{functions_8h_a401290cdbb72c9a0f6b801217d9a5d38}{init\+Radio}} (SX1262 \&radio, Lo\+Ra\+WANNode \&node, \mbox{\hyperlink{struct_t_t_n_vars}{TTNVars}} \mbox{\hyperlink{struct_t_t_n_vars}{TTNVars}}, int retry\+Count)
+\begin{DoxyCompactList}\small\item\em \+: Initialize the radio module \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{functions_8h_a5e57430283061f0a4e539279c6d57b69}{init\+Lora}} (Lo\+Ra\+WANNode \&node)
+\item 
+void \mbox{\hyperlink{functions_8h_a328fec05af67068054d988e698cf4daa}{send\+Message}} (String message, SX1262 \&radio, Lo\+Ra\+WANNode \&node)
+\begin{DoxyCompactList}\small\item\em \+: Send a message via Lo\+Ra\+WAN \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{functions_8h_a3b62d03b1d6cf6758c19897337498587}{init\+MPU6050}} (MPU6050 \&accelgyro)
+\item 
+void \mbox{\hyperlink{functions_8h_a889ca4b369dd61e40cb2e33d8506fcc7}{init\+GPS}} (Software\+Serial \&ss, int GPSBaud)
+\begin{DoxyCompactList}\small\item\em Initialize the GPS module. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{struct_coordinates}{Coordinates}} \mbox{\hyperlink{functions_8h_adade3d1ad90c4b8da5c4269beffe5e13}{read\+GPS}} (Software\+Serial \&ss, Tiny\+GPSPlus \&gps)
+\begin{DoxyCompactList}\small\item\em Read the GPS coordinates. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{functions_8h_a2db20e6cabff2cd55904a0763889d19c}\label{functions_8h_a2db20e6cabff2cd55904a0763889d19c} 
+\index{functions.h@{functions.h}!displayMessage@{displayMessage}}
+\index{displayMessage@{displayMessage}!functions.h@{functions.h}}
+\doxysubsubsection{\texorpdfstring{displayMessage()}{displayMessage()}}
+{\footnotesize\ttfamily void display\+Message (\begin{DoxyParamCaption}\item[{U8\+G2 \&}]{u8g2,  }\item[{String}]{message }\end{DoxyParamCaption})}
+
+
+
+Display a message on the screen. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & U8\+G2 \&u8g2 -\/ The display object \\
+\hline
+{\em } & String message -\/ The message to display \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\+: void 
+\end{DoxyReturn}
+\Hypertarget{functions_8h_aeb233c6e457322f97c005b1c29530baa}\label{functions_8h_aeb233c6e457322f97c005b1c29530baa} 
+\index{functions.h@{functions.h}!initDisplay@{initDisplay}}
+\index{initDisplay@{initDisplay}!functions.h@{functions.h}}
+\doxysubsubsection{\texorpdfstring{initDisplay()}{initDisplay()}}
+{\footnotesize\ttfamily void init\+Display (\begin{DoxyParamCaption}\item[{U8\+G2 \&}]{u8g2 }\end{DoxyParamCaption})}
+
+
+
+\+: Initialize the display 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & U8\+G2 \&u8g2 -\/ The display object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\+: void 
+\end{DoxyReturn}
+\Hypertarget{functions_8h_a889ca4b369dd61e40cb2e33d8506fcc7}\label{functions_8h_a889ca4b369dd61e40cb2e33d8506fcc7} 
+\index{functions.h@{functions.h}!initGPS@{initGPS}}
+\index{initGPS@{initGPS}!functions.h@{functions.h}}
+\doxysubsubsection{\texorpdfstring{initGPS()}{initGPS()}}
+{\footnotesize\ttfamily void init\+GPS (\begin{DoxyParamCaption}\item[{Software\+Serial \&}]{ss,  }\item[{int}]{GPSBaud }\end{DoxyParamCaption})}
+
+
+
+Initialize the GPS module. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ss} & -\/ Software\+Serial object \\
+\hline
+{\em GPSBaud} & -\/ GPS Baudrate \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void ~\newline
+ 
+\end{DoxyReturn}
+\Hypertarget{functions_8h_a5e57430283061f0a4e539279c6d57b69}\label{functions_8h_a5e57430283061f0a4e539279c6d57b69} 
+\index{functions.h@{functions.h}!initLora@{initLora}}
+\index{initLora@{initLora}!functions.h@{functions.h}}
+\doxysubsubsection{\texorpdfstring{initLora()}{initLora()}}
+{\footnotesize\ttfamily void init\+Lora (\begin{DoxyParamCaption}\item[{Lo\+Ra\+WANNode \&}]{node }\end{DoxyParamCaption})}
+
+\Hypertarget{functions_8h_a3b62d03b1d6cf6758c19897337498587}\label{functions_8h_a3b62d03b1d6cf6758c19897337498587} 
+\index{functions.h@{functions.h}!initMPU6050@{initMPU6050}}
+\index{initMPU6050@{initMPU6050}!functions.h@{functions.h}}
+\doxysubsubsection{\texorpdfstring{initMPU6050()}{initMPU6050()}}
+{\footnotesize\ttfamily void init\+MPU6050 (\begin{DoxyParamCaption}\item[{MPU6050 \&}]{accelgyro }\end{DoxyParamCaption})}
+
+\Hypertarget{functions_8h_a401290cdbb72c9a0f6b801217d9a5d38}\label{functions_8h_a401290cdbb72c9a0f6b801217d9a5d38} 
+\index{functions.h@{functions.h}!initRadio@{initRadio}}
+\index{initRadio@{initRadio}!functions.h@{functions.h}}
+\doxysubsubsection{\texorpdfstring{initRadio()}{initRadio()}}
+{\footnotesize\ttfamily void init\+Radio (\begin{DoxyParamCaption}\item[{SX1262 \&}]{radio,  }\item[{Lo\+Ra\+WANNode \&}]{node,  }\item[{\mbox{\hyperlink{struct_t_t_n_vars}{TTNVars}}}]{TTNVars,  }\item[{int}]{retry\+Count }\end{DoxyParamCaption})}
+
+
+
+\+: Initialize the radio module 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & SX1262 \&radio -\/ The radio object \\
+\hline
+{\em } & Lo\+Ra\+WANNode \&node -\/ The Lo\+Ra\+WAN node object \\
+\hline
+{\em } & char\texorpdfstring{$\ast$}{*} dev\+Addr\+Str -\/ The device address string \\
+\hline
+{\em } & char\texorpdfstring{$\ast$}{*} nwk\+SKey\+Str -\/ The network session key string \\
+\hline
+{\em } & char\texorpdfstring{$\ast$}{*} app\+SKey\+Str -\/ The application session key string \\
+\hline
+{\em } & uint32\+\_\+t dev\+Addr -\/ The device address \\
+\hline
+{\em } & uint8\+\_\+t nwk\+SKey\mbox{[}16\mbox{]} -\/ The network session key \\
+\hline
+{\em } & uint8\+\_\+t app\+SKey\mbox{[}16\mbox{]} -\/ The application session key \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\+: void 
+\end{DoxyReturn}
+\Hypertarget{functions_8h_a39dd857d437411bf1e3b4509efe844de}\label{functions_8h_a39dd857d437411bf1e3b4509efe844de} 
+\index{functions.h@{functions.h}!readBatteryLevel@{readBatteryLevel}}
+\index{readBatteryLevel@{readBatteryLevel}!functions.h@{functions.h}}
+\doxysubsubsection{\texorpdfstring{readBatteryLevel()}{readBatteryLevel()}}
+{\footnotesize\ttfamily float read\+Battery\+Level (\begin{DoxyParamCaption}\item[{int}]{VBATPIN }\end{DoxyParamCaption})}
+
+\Hypertarget{functions_8h_adade3d1ad90c4b8da5c4269beffe5e13}\label{functions_8h_adade3d1ad90c4b8da5c4269beffe5e13} 
+\index{functions.h@{functions.h}!readGPS@{readGPS}}
+\index{readGPS@{readGPS}!functions.h@{functions.h}}
+\doxysubsubsection{\texorpdfstring{readGPS()}{readGPS()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_coordinates}{Coordinates}} read\+GPS (\begin{DoxyParamCaption}\item[{Software\+Serial \&}]{ss,  }\item[{Tiny\+GPSPlus \&}]{gps }\end{DoxyParamCaption})}
+
+
+
+Read the GPS coordinates. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ss} & -\/ Software\+Serial object \\
+\hline
+{\em gps} & -\/ GPS object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\doxylink{struct_coordinates}{Coordinates} struct (longitude, latitude) 
+\end{DoxyReturn}
+\Hypertarget{functions_8h_a328fec05af67068054d988e698cf4daa}\label{functions_8h_a328fec05af67068054d988e698cf4daa} 
+\index{functions.h@{functions.h}!sendMessage@{sendMessage}}
+\index{sendMessage@{sendMessage}!functions.h@{functions.h}}
+\doxysubsubsection{\texorpdfstring{sendMessage()}{sendMessage()}}
+{\footnotesize\ttfamily void send\+Message (\begin{DoxyParamCaption}\item[{String}]{message,  }\item[{SX1262 \&}]{radio,  }\item[{Lo\+Ra\+WANNode \&}]{node }\end{DoxyParamCaption})}
+
+
+
+\+: Send a message via Lo\+Ra\+WAN 
+
+
+\begin{DoxyParams}{Parameters}
+{\em } & String message -\/ The message to send \\
+\hline
+{\em } & SX1262 \&radio -\/ The radio object \\
+\hline
+{\em } & Lo\+Ra\+WANNode \&node -\/ The Lo\+Ra\+WAN node object \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\+: void 
+\end{DoxyReturn}
+\Hypertarget{functions_8h_a8bd43df7bc356312142e1723306fb9ab}\label{functions_8h_a8bd43df7bc356312142e1723306fb9ab} 
+\index{functions.h@{functions.h}!showVersions@{showVersions}}
+\index{showVersions@{showVersions}!functions.h@{functions.h}}
+\doxysubsubsection{\texorpdfstring{showVersions()}{showVersions()}}
+{\footnotesize\ttfamily void show\+Versions (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\Hypertarget{functions_8h_af39bb8d1d05e063f6aa34c13541be1d1}\label{functions_8h_af39bb8d1d05e063f6aa34c13541be1d1} 
+\index{functions.h@{functions.h}!TTNVariableConversion@{TTNVariableConversion}}
+\index{TTNVariableConversion@{TTNVariableConversion}!functions.h@{functions.h}}
+\doxysubsubsection{\texorpdfstring{TTNVariableConversion()}{TTNVariableConversion()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_t_t_n_vars}{TTNVars}} TTNVariable\+Conversion (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{dev\+Addr\+Str,  }\item[{char \texorpdfstring{$\ast$}{*}}]{nwk\+SKey\+Str,  }\item[{char \texorpdfstring{$\ast$}{*}}]{app\+SKey\+Str }\end{DoxyParamCaption})}
+
+\Hypertarget{functions_8h_aeaffd363e295bd3d4bd5d7299e2fcd99}\label{functions_8h_aeaffd363e295bd3d4bd5d7299e2fcd99} 
+\index{functions.h@{functions.h}!wirelessTracker1Setup@{wirelessTracker1Setup}}
+\index{wirelessTracker1Setup@{wirelessTracker1Setup}!functions.h@{functions.h}}
+\doxysubsubsection{\texorpdfstring{wirelessTracker1Setup()}{wirelessTracker1Setup()}}
+{\footnotesize\ttfamily void wireless\+Tracker1\+Setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
